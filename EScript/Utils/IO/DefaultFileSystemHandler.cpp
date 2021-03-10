@@ -93,8 +93,8 @@ EntryInfo DefaultFileSystemHandler::getEntryInfo(const std::string &filename){
 	EntryInfo info;
 	struct stat fileStat;
 	if( stat(filename.c_str(), &fileStat)==0 ){
-		info.cTime = fileStat.st_ctime;
-		info.mTime = fileStat.st_mtime;
+		info.cTime = static_cast<uint32_t>(fileStat.st_ctime);
+		info.mTime = static_cast<uint32_t>(fileStat.st_mtime);
 		if(S_ISDIR(fileStat.st_mode)){
 			info.type = TYPE_DIRECTORY;
 		}else if(S_ISREG(fileStat.st_mode)){

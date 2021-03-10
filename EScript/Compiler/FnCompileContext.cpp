@@ -41,7 +41,7 @@ void FnCompileContext::pushSetting_basicLocalVars(){
 
 	const std::vector<StringId> & names = instructions.getLocalVariables();
 	for(size_t i = 0;i<names.size();++i){
-		entry.declaredVariables[ names[i] ] = std::make_pair(variableType_t::LOCAL_VAR,i);
+		entry.declaredVariables[ names[i] ] = std::make_pair(variableType_t::LOCAL_VAR,static_cast<int>(i));
 		if(!variableCollectorStack.empty()){
 			variableCollectorStack.top()->push_back(i);
 		}
@@ -54,14 +54,14 @@ void FnCompileContext::pushSetting_declaredVars(const declaredVariableMap_t & va
 
 	for(const auto & var_idAndType : variables) {
 		if(var_idAndType.second == variableType_t::LOCAL_VAR){
-			const size_t varIndex = instructions.declareLocalVariable(var_idAndType.first);
-			entry.declaredVariables[var_idAndType.first] = std::make_pair(variableType_t::LOCAL_VAR,varIndex);
+			const uint32_t varIndex = instructions.declareLocalVariable(var_idAndType.first);
+			entry.declaredVariables[var_idAndType.first] = std::make_pair(variableType_t::LOCAL_VAR,static_cast<int>(varIndex));
 			if(!variableCollectorStack.empty()){
 				variableCollectorStack.top()->push_back(varIndex);
 			}
 		}else if(var_idAndType.second == variableType_t::STATIC_VAR){
-			const size_t varIndex = staticData.declareStaticVariable(var_idAndType.first);
-			entry.declaredVariables[var_idAndType.first] = std::make_pair(variableType_t::STATIC_VAR,varIndex);
+			const uint32_t varIndex = staticData.declareStaticVariable(var_idAndType.first);
+			entry.declaredVariables[var_idAndType.first] = std::make_pair(variableType_t::STATIC_VAR,static_cast<int>(varIndex));
 		}
 	}
 }

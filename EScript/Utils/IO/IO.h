@@ -31,7 +31,7 @@ ESCRIPTAPI void saveFile(const std::string & filename,const std::string & conten
 
 /*! @param filename
  *	@return file modification Time	*/
-ESCRIPTAPI uint32_t getFileMTime(const std::string& filename);
+ESCRIPTAPI uint64_t getFileMTime(const std::string& filename);
 
 /*!	@param filename
  *	@return  IO::entryType (\see IOBase.h)	*/

@@ -6,6 +6,9 @@
 //
 // Licensed under the MIT License. See LICENSE file for details.
 // ---------------------------------------------------------------------------------
+#if defined(_WIN32) || defined(_WIN64)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #include "StringUtils.h"
 #include <cstdlib>
 #include <cstdio>
@@ -86,7 +89,7 @@ double StringUtils::readNumber(const char * s, std::size_t & cursor, bool checkS
 std::string StringUtils::trim(const std::string & s) {
 	if(s.empty())
 		return std::string();
-	unsigned int start,end;
+	size_t start,end;
 	for(start = 0;start<s.length();++start) {
 		const char c = s[start];
 		if(c!=' '&&c!='\t'&&c!='\n'&&c!='\r'&&c!='\0'&&c!=11)
@@ -97,11 +100,11 @@ std::string StringUtils::trim(const std::string & s) {
 		if(c!=' '&&c!='\t'&&c!='\n'&&c!='\r'&&c!='\0'&&c!=11)
 		break;
 	}
-	const int count = end-start+1;
+	const size_t count = end-start+1;
 	return count>0 ? s.substr(start,count) : std::string();
 }
 std::string StringUtils::rTrim(const std::string & s){
-	for(int right = s.length()-1 ; right >= 0 ; --right){
+	for(size_t right = s.length()-1 ; right >= 0 ; --right){
 		const char c = s[right];
 		if( !(c==' '||c=='\t'||c=='\n'||c=='\r'||c=='\0'||c==11))
 			return s.substr(0,right+1);
@@ -120,11 +123,11 @@ std::string StringUtils::lTrim(const std::string & s){
 std::string StringUtils::replaceAll(const std::string &subject,const std::string &find,const std::string &replace,int count) {
 	std::ostringstream s;
 
-	unsigned int cursor = 0;
-	unsigned int len = subject.length();
-	unsigned int fLen = find.length();
+	size_t cursor = 0;
+	const size_t len = subject.length();
+	const size_t fLen = find.length();
 	//unsigned int pos = string::npos;
-	int nr = 0;
+	size_t nr = 0;
 	while(cursor<len&& nr!=count) {
 		size_t pos = subject.find(find,cursor);
 

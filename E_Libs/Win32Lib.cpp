@@ -7,6 +7,7 @@
 // Licensed under the MIT License. See LICENSE file for details.
 // ---------------------------------------------------------------------------------
 #ifdef _WIN32
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "../EScript/EScript.h"
 #include "Win32Lib.h"

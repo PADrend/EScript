@@ -46,7 +46,7 @@ void FunctionCallContext::release(FunctionCallContext *fcc){
 std::string FunctionCallContext::getLocalVariablesAsString(const bool includeUndefined)const{
 	const std::vector<StringId> & vars = getInstructionBlock().getLocalVariables();
 	std::ostringstream os;
-	for(size_t i = 0;i<vars.size();++i ){
+	for(uint32_t i = 0;i<vars.size();++i ){
 		ObjPtr value = getLocalVariable(i);
 		if(value.isNull() && !includeUndefined )
 			continue;

@@ -6,6 +6,10 @@
 //
 // Licensed under the MIT License. See LICENSE file for details.
 // ---------------------------------------------------------------------------------
+#if defined(_WIN32) || defined(_WIN64)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "StdLib.h"
 
 #include "../EScript/Basics.h"
@@ -334,7 +338,7 @@ void StdLib::init(EScript::Namespace * globals) {
 	//!	[ESF] Number exec(String path, Array argv)
 	ES_FUNCTION(globals, "exec", 2, 2, {
 		Array * array = assertType<Array>(rt, parameter[1]);
-		uint32_t argc = array->size();
+		size_t argc = array->size();
 
 		char ** argv  = new char *[argc + 1];
 		for(uint_fast32_t i = 0; i < argc; ++i) {

@@ -38,7 +38,7 @@ void IO::saveFile(const std::string & filename,const std::string & content,bool 
 }
 
 //! (static)
-uint32_t IO::getFileMTime(const std::string& filename) {
+uint64_t IO::getFileMTime(const std::string& filename) {
 	return getFileSystemHandler()->getFileMTime(filename);
 }
 

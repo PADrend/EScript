@@ -283,7 +283,7 @@ int Array::rt_indexOf(Runtime & runtime,ObjPtr search,size_t index){
 	std::advance(it, index);
 	for(; it != end(); ++it) {
 		if( search->isEqual(runtime,*it) )
-			return index;
+			return static_cast<int>(index);
 		++index;
 	}
 	return -1;
