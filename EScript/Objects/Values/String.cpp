@@ -137,7 +137,7 @@ void String::init(EScript::Namespace & globals) {
 	//! [ESMF] String String.substr( (Number)begin [,(Number)length] )
 	ES_MFUNCTION(typeObject,const String,"substr",1,2, {
 		int start = parameter[0].to<int>(rt);
-		const int length = thisObj->sData.getNumCodepoints();
+		const int length = static_cast<int>(thisObj->sData.getNumCodepoints());
 		if(start>=length) return create("");
 		if(start<0) start = std::max(0, length+start);
 		int substrLength = length-start;

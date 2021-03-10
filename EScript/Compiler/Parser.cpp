@@ -116,7 +116,7 @@ static void warnOnShadowedLocalVars(ParsingContext & ctxt,TStartBlock * tBlock){
 	const auto & vars = block->getVars();
 	if(vars.empty())
 		return;
-	for(int i = ctxt.blocks.size()-1; i>=0 && ctxt.blocks[i]!=nullptr; --i ){
+	for(int i = static_cast<int>(ctxt.blocks.size())-1; i>=0 && ctxt.blocks[i]!=nullptr; --i ){
 		const declaredVariableMap_t & vars2 = ctxt.blocks[i]->getVars();
 		if(vars2.empty())
 			continue;
@@ -206,7 +206,7 @@ static int findExpression(ParsingContext & ctxt,int cursor) {
 			case TStartBracket::TYPE_ID:{
 				TStartBracket * sb = Token::cast<TStartBracket>(t);
 				if(sb->endBracketIndex>1){
-					to = sb->endBracketIndex;
+					to = static_cast<int>(sb->endBracketIndex);
 				}else {
 					++level;
 				}
@@ -371,7 +371,7 @@ void pass_1(ParsingContext & ctxt) {
 	std::stack<_BracketInfo> bInfStack;
 	bInfStack.push(_BracketInfo());
 
-	for(size_t cursor = 0;cursor<tokens.size();++cursor) {
+	for(uint32_t cursor = 0;cursor<tokens.size();++cursor) {
 		Token * token = tokens.at(cursor).get();
 		/// currentBlockInfo
 		_BracketInfo & cbi = bInfStack.top();
@@ -508,7 +508,7 @@ void pass_2(ParsingContext & ctxt,
 
 	enrichedTokens.push_back( new TStartBlock(ctxt.rootBlock) );
 
-	for(size_t cursor = 0;cursor<ctxt.tokens.size();++cursor) {
+	for(uint32_t cursor = 0;cursor<ctxt.tokens.size();++cursor) {
 		_CountedRef<Token> token = ctxt.tokens.at(cursor).get();
 
 		const int line = token->getLine();
@@ -1425,7 +1425,7 @@ EPtr<AST::ASTNode> readFunctionDeclaration(ParsingContext & ctxt,int & cursor){
 	++cursor;
 
 	{	// create function expression
-		UserFunctionExpr * uFunExpr = new UserFunctionExpr(block,superConCallExpressions,line);
+		UserFunctionExpr * uFunExpr = new UserFunctionExpr(block,superConCallExpressions,static_cast<int>(line));
 		uFunExpr->emplaceParameterExpressions(std::move(params));	// set parameter expressions
 
 		// store code segment in userFunction
@@ -2170,7 +2170,7 @@ ERef<AST::Block> Parser::parse(const CodeFragment & code) {
 	try {
 		tokenizer.getTokens(code.getCodeString(),tokens); //! \todo Use codeFragment for Tokenizer
 		pass_1(ctxt);
-	} catch (Exception * e) {
+	} catch (Exception *) {
 		//std::cerr << e->toString() << std::endl;
 		throw;
 	}

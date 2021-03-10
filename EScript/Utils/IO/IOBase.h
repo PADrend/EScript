@@ -23,8 +23,8 @@ enum entryType_t{
 struct EntryInfo{
 	uint64_t fileSize;
 	entryType_t type;
-	uint32_t mTime;
-	uint32_t cTime;
+	uint64_t mTime;
+	uint64_t cTime;
 	EntryInfo():fileSize(0),type(TYPE_UNKNOWN),mTime(0),cTime(0){}
 };
 

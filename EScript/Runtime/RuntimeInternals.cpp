@@ -820,8 +820,8 @@ std::string RuntimeInternals::getStackInfo(){
 	std::ostringstream os;
 	os<<"\n\n----------------------\nCall stack:";
 	int nr = 0;
-	const int skipStart = activeFCCs.size()>50 ? 20 : activeFCCs.size()+1;
-	const int skipEnd = activeFCCs.size()>50 ? activeFCCs.size()-20 : 0;
+	const int skipStart = activeFCCs.size()>50 ? 20 : static_cast<int>(activeFCCs.size())+1;
+	const int skipEnd = activeFCCs.size()>50 ? static_cast<int>(activeFCCs.size())-20 : 0;
 	for(std::vector<_CountedRef<FunctionCallContext> >::reverse_iterator it = activeFCCs.rbegin();it!=activeFCCs.rend();++it){
 		++nr;
 		if( nr>=skipStart && nr<skipEnd){
@@ -1018,7 +1018,7 @@ void RuntimeInternals::initSystemFunctions(){
 					// pop expanding array parameter
 					ObjRef expandingParam( std::move(fcc->stack_popObject()));
 					Array * arr = assertType<Array>(rt,expandingParam);
-					numParams += arr->size();
+					numParams += static_cast<uint32_t>(arr->size());
 					--numParams;	// the extracted array is no parameter
 
 					// store array values

@@ -86,7 +86,7 @@ void IOLib::init(EScript::Namespace * o) {
 	ES_FUN(lib,"isFile",1,1,IO::getEntryType(parameter[0].toString())==IO::TYPE_FILE)
 
 	//! [ESF] int fileMTime(string filename)
-	ES_FUN(lib,"fileMTime",1,1,static_cast<int>(IO::getFileMTime(parameter[0].toString())))
+	ES_FUN(lib,"fileMTime",1,1,static_cast<double>(IO::getFileMTime(parameter[0].toString())))
 
 	//! [ESF] int fileSize(string filename)
 	ES_FUN(lib,"fileSize",1,1,static_cast<double>(IO::getFileSize(parameter[0].toString())))

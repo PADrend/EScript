@@ -32,7 +32,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#if !defined(_MSC_VER) and !defined(UNUSED_ATTRIBUTE)
+#if !defined(_MSC_VER) && !defined(UNUSED_ATTRIBUTE)
 #define UNUSED_ATTRIBUTE __attribute__ ((unused))
 #else
 #define UNUSED_ATTRIBUTE
@@ -128,7 +128,7 @@ void Compiler::finalizeInstructions( InstructionBlock & instructionBlock ){
 			std::vector<Instruction> tmp;
 			for(const auto & instruction : instructions) {
 				if(instruction.getType() == Instruction::I_SET_MARKER) {
-					markerToPosition[instruction.getValue_uint32()] = tmp.size();
+					markerToPosition[instruction.getValue_uint32()] = static_cast<uint32_t>(tmp.size());
 				} else {
 					tmp.push_back(instruction);
 				}
@@ -233,7 +233,7 @@ bool initHandler(handlerRegistry_t & m){
 			ctxt.getCompiler().throwError(ctxt,"'break' outside a loop.");
 		}
 		for(const auto & var : ctxt.collectLocalVariables(FnCompileContext::BREAK_MARKER)) {
-			ctxt.addInstruction(Instruction::createResetLocalVariable(var));
+			ctxt.addInstruction(Instruction::createResetLocalVariable(static_cast<uint32_t>(var)));
 		}
 		ctxt.addInstruction(Instruction::createJmp(target));
 	})
@@ -320,7 +320,7 @@ bool initHandler(handlerRegistry_t & m){
 		}
 		std::vector<size_t> variablesToReset = ctxt.collectLocalVariables(FnCompileContext::CONTINUE_MARKER);
 		for(const auto & var : variablesToReset) {
-			ctxt.addInstruction(Instruction::createResetLocalVariable(var));
+			ctxt.addInstruction(Instruction::createResetLocalVariable(static_cast<uint32_t>(var)));
 		}
 		ctxt.addInstruction(Instruction::createJmp(target));
 	})
@@ -403,7 +403,7 @@ bool initHandler(handlerRegistry_t & m){
 				ctxt.addExpression(param);
 			}
 		}
-		uint32_t paramCount = self->getParams().size();
+		uint32_t paramCount = static_cast<uint32_t>(self->getParams().size());
 		if(self->hasExpandingParameters()){
 			// store param count on stack
 			ctxt.addInstruction(Instruction::createPushUInt(static_cast<uint32_t>(paramCount)));
@@ -706,7 +706,7 @@ bool initHandler(handlerRegistry_t & m){
 
 		// clear all variables defined inside try block
 		for(const auto & localVar : collectedVariableIndices) {
-			ctxt.addInstruction(Instruction::createResetLocalVariable(localVar));
+			ctxt.addInstruction(Instruction::createResetLocalVariable(static_cast<uint32_t>(localVar)));
 		}
 
 		// define exception variable
@@ -758,7 +758,7 @@ bool initHandler(handlerRegistry_t & m){
 			}
 
 			int maxParamValueCount = 0;
-			size_t i = 0;
+			int i = 0;
 			for(const auto & param : self->getParamList()) {
 				if(param.isMultiParam()){
 					fun->setMultiParam(i);
@@ -816,7 +816,7 @@ bool initHandler(handlerRegistry_t & m){
 					ctxt2.addExpression(typeExpr);
 				}
 				ctxt2.addInstruction(Instruction::createGetLocalVariable(varIdx));
-				ctxt2.addInstruction(Instruction::createSysCall(Consts::SYS_CALL_TEST_ARRAY_PARAMETER_CONSTRAINTS,typeExpressions.size()+1 ));
+				ctxt2.addInstruction(Instruction::createSysCall(Consts::SYS_CALL_TEST_ARRAY_PARAMETER_CONSTRAINTS,static_cast<uint32_t>(typeExpressions.size()+1) ));
 				ctxt2.addInstruction(Instruction::createPop());
 
 			}else{
@@ -837,7 +837,7 @@ bool initHandler(handlerRegistry_t & m){
 
 				// all constraint-checks failed! -> stack contains all failed constraints
 				ctxt2.addInstruction(Instruction::createGetLocalVariable(varIdx));
-				ctxt2.addInstruction(Instruction::createSysCall(Consts::SYS_CALL_THROW_TYPE_EXCEPTION,constrainOkMarkers.size()+1 ));
+				ctxt2.addInstruction(Instruction::createSysCall(Consts::SYS_CALL_THROW_TYPE_EXCEPTION,static_cast<uint32_t>(constrainOkMarkers.size()+1) ));
 				ctxt2.addInstruction(Instruction::createJmp( Instruction::INVALID_JUMP_ADDRESS ));
 //
 				// depending on which constraint-check succeeded, pop the constraint-values from the stack
@@ -855,7 +855,7 @@ bool initHandler(handlerRegistry_t & m){
 		}
 
 		// init 'this' (or create it if this is a constructor call)
-		ctxt2.addInstruction(Instruction::createInitCaller(superConstrParams.size()));
+		ctxt2.addInstruction(Instruction::createInitCaller(static_cast<uint32_t>(superConstrParams.size())));
 
 		ctxt2.addStatement(self->getBlock());
 		ctxt2.popSetting();

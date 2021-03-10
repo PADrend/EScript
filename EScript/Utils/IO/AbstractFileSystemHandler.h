@@ -58,11 +58,11 @@ public:
 		throw std::ios_base::failure("unsupported operation");
 	}
 	//! ---o
-	virtual uint32_t getFileCTime(const std::string & path){
+	virtual uint64_t getFileCTime(const std::string & path){
 		return getEntryInfo(path).cTime;
 	}
 	//! ---o
-	virtual uint32_t getFileMTime(const std::string & path){
+	virtual uint64_t getFileMTime(const std::string & path){
 		return getEntryInfo(path).mTime;
 	}
 	//! ---o

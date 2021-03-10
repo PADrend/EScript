@@ -87,7 +87,7 @@ ObjRef _eval(Runtime & runtime, const CodeFragment & code,const std::unordered_m
 	// assign injected static variable values
 	auto * staticData = compileUnit.second.get();
 	if(staticData){
-		size_t i=0;
+		uint32_t i=0;
 		for(auto & staticVarName: staticData->getStaticVariableNames()){
 			const auto it = staticVars.find(staticVarName);
 			if(it!=staticVars.end())
